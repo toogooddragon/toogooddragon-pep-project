@@ -19,14 +19,14 @@ public class AccountDAO {
         try{
             String sql = "insert into account (username, password) values (?, ?)";
             
-            PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            preparedStatement.setString(1, account.getUsername());
-            preparedStatement.setString(2, account.getPassword());
+            ps.setString(1, account.getUsername());
+            ps.setString(2, account.getPassword());
 
-            preparedStatement.executeUpdate();
+            ps.executeUpdate();
 
-            ResultSet pkrs = preparedStatement.getGeneratedKeys();
+            ResultSet pkrs = ps.getGeneratedKeys();
             if(pkrs.next()){
                 int ID = pkrs.getInt(1);
                 return new Account(ID, account.getUsername(), account.getPassword());
@@ -43,12 +43,12 @@ public class AccountDAO {
         try{
             String sql = "select * from account where username = ? and password = ?";
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
 
-            preparedStatement.setString(1, account.getUsername());
-            preparedStatement.setString(2, account.getPassword());
+            ps.setString(1, account.getUsername());
+            ps.setString(2, account.getPassword());
 
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
                 Account account2 = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("password"));

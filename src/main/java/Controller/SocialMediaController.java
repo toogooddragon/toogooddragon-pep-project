@@ -38,8 +38,8 @@ public class SocialMediaController {
 
     
     private void registerUser(Context ctx) throws JsonProcessingException{
-        ObjectMapper mObjectMapper = new ObjectMapper();
-        Account account = mObjectMapper.readValue(ctx.body(), Account.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
 
         Account addedAccount = accountService.createAccount(account);
 
@@ -51,8 +51,8 @@ public class SocialMediaController {
     }
     
     private void loginUser(Context ctx) throws JsonProcessingException{
-        ObjectMapper mObjectMapper = new ObjectMapper();
-        Account account = mObjectMapper.readValue(ctx.body(), Account.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
 
         Account loginAccount = accountService.getAccount(account);
 
@@ -65,8 +65,8 @@ public class SocialMediaController {
 
 
     private void createMessage(Context ctx) throws JsonProcessingException{
-        ObjectMapper mObjectMapper = new ObjectMapper();
-        Message message = mObjectMapper.readValue(ctx.body(), Message.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
 
         Message newMsg = messageService.createMessage(message);
 
@@ -100,8 +100,8 @@ public class SocialMediaController {
     }
 
     private void patchMessage(Context ctx) throws JsonProcessingException{
-        ObjectMapper mObjectMapper = new ObjectMapper(); //Jackson ObjectMapper
-        Message m = mObjectMapper.readValue(ctx.body(), Message.class); 
+        ObjectMapper mapper = new ObjectMapper();
+        Message m = mapper.readValue(ctx.body(), Message.class); 
         int id = Integer.parseInt(ctx.pathParam("message_id")); 
 
         Message updatedMessage = messageService.updateMessage(m.getMessage_text(), id); 

@@ -19,15 +19,15 @@ public class MessageDAO {
         try{
             String sql = "insert into message(posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?)";
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
+            PreparedStatement pS = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
 
-            preparedStatement.setInt(1, message.getPosted_by());
-            preparedStatement.setString(2, message.getMessage_text());
-            preparedStatement.setLong(3, message.getTime_posted_epoch());
+            pS.setInt(1, message.getPosted_by());
+            pS.setString(2, message.getMessage_text());
+            pS.setLong(3, message.getTime_posted_epoch());
 
-            preparedStatement.executeUpdate();
+            pS.executeUpdate();
 
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+            ResultSet rs = pS.getGeneratedKeys();
 
             while(rs.next()){
                 int ID = rs.getInt(1);
@@ -45,11 +45,11 @@ public class MessageDAO {
         try{
             String sql = "select * from message where message_id = ?";
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            PreparedStatement pS = conn.prepareStatement(sql);
 
-            preparedStatement.setInt(1, id);
+            pS.setInt(1, id);
 
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = pS.executeQuery();
 
             while(rs.next()){
                 return new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
@@ -67,10 +67,10 @@ public class MessageDAO {
         try{
             String sql = "select * from account where account_id = ?";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, accountID);
+            PreparedStatement pS = connection.prepareStatement(sql);
+            pS.setInt(1, accountID);
 
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = pS.executeQuery();
             if(rs.next()){
                 return true;
             }
@@ -85,9 +85,9 @@ public class MessageDAO {
         List<Message> messages = new ArrayList<>();
         try{
             String sql = "select * from message";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            PreparedStatement pS = conn.prepareStatement(sql);
 
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = pS.executeQuery();
 
             while(rs.next()){
                 messages.add(new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch")));            
@@ -106,10 +106,10 @@ public class MessageDAO {
         if(msg != null){
             try{
             String sql = "delete from message where message_id = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            PreparedStatement pS = conn.prepareStatement(sql);
 
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
+            pS.setInt(1, id);
+            pS.executeUpdate();
 
             return msg;
             } catch(SQLException e){
@@ -124,12 +124,12 @@ public class MessageDAO {
         Connection conn = ConnectionUtil.getConnection();
         try{
             String sql = "update message set message_text = ? where message_id = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            PreparedStatement pS = conn.prepareStatement(sql);
 
-            preparedStatement.setString(1, text);
-            preparedStatement.setInt(2, id);
+            pS.setString(1, text);
+            pS.setInt(2, id);
 
-            preparedStatement.executeUpdate();
+            pS.executeUpdate();
 
             return this.getMessage(id);
         
@@ -145,10 +145,10 @@ public class MessageDAO {
         try{
             String sql = "select * from message where posted_by = ?";
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setInt(1, accountID);
+            PreparedStatement pS = conn.prepareStatement(sql);
+            pS.setInt(1, accountID);
 
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = pS.executeQuery();
 
             while(rs.next()){
                 messages.add(new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch")));            
